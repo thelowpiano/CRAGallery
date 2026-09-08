@@ -1,69 +1,43 @@
+```html
 <!DOCTYPE html>
-
 <html lang="en">
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRA Model Test</title>
 
-<title>CRA Gallery Test</title>
+    <script type="module"
+        src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.3.1/model-viewer.min.js">
+    </script>
 
-<script type="module"
-    src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.3.1/model-viewer.min.js">
-</script>
+    <style>
+        body {
+            margin: 0;
+            background: #f0f0f0;
+        }
 
-<style>
-
-    body {
-        margin: 0;
-        font-family: Arial, sans-serif;
-        background: #f4f4f4;
-    }
-
-    h1 {
-        background: #222;
-        color: white;
-        margin: 0;
-        padding: 20px;
-    }
-
-    .viewer {
-        max-width: 1200px;
-        margin: 30px auto;
-        padding: 20px;
-    }
-
-    model-viewer {
-        width: 100%;
-        height: 600px;
-        background: #ddd;
-    }
-
-</style>
-
+        model-viewer {
+            width: 100%;
+            height: 100vh;
+            background: #ffffff;
+        }
+    </style>
 </head>
 
 <body>
 
-<h1>CRA Virtual Gallery</h1>
-
-<div class="viewer">
-
-<model-viewer
-    id="modelViewer"
-    src="models/Personalized crotalus.glb"
-    ar
-    ar-modes="webxr scene-viewer quick-look"
-    camera-controls
-    shadow-intensity="1"
-    environment-image="neutral"
-    auto-rotate
-    alt="Personalized Crotalus">
-</model-viewer>
-
-</div>
+    <model-viewer
+        src="models/Personalized crotalus.glb"
+        camera-controls
+        auto-rotate
+        shadow-intensity="1"
+        environment-image="neutral"
+        alt="Personalized Crotalus">
+    </model-viewer>
 
 </body>
 
 </html>
+```
