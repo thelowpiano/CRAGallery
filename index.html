@@ -1,8 +1,15 @@
 <!DOCTYPE html>
 
-<html lang="en"> <head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<html lang="en">
 
-<title>3D Model Gallery</title>
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>CRA Virtual Gallery</title>
 
 <!-- Google Model Viewer -->
 <script type="module"
@@ -10,6 +17,7 @@
 </script>
 
 <style>
+
     * {
         box-sizing: border-box;
     }
@@ -43,9 +51,6 @@
         padding: 0 20px;
     }
 
-    /*
-     * Main 3D viewer
-     */
     .viewer-container {
         position: relative;
         background: white;
@@ -60,9 +65,6 @@
         background: #eeeeee;
     }
 
-    /*
-     * Model information
-     */
     .model-info {
         padding: 20px 25px;
     }
@@ -78,12 +80,11 @@
         line-height: 1.5;
     }
 
-    /*
-     * Gallery thumbnails
-     */
     .thumbnail-gallery {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        grid-template-columns:
+            repeat(auto-fill, minmax(180px, 1fr));
+
         gap: 15px;
         margin-top: 25px;
     }
@@ -94,13 +95,12 @@
         border-radius: 10px;
         overflow: hidden;
         cursor: pointer;
-        transition: all 0.2s ease;
+        transition: 0.2s;
         box-shadow: 0 2px 8px rgba(0,0,0,0.08);
     }
 
     .thumbnail:hover {
         transform: translateY(-3px);
-        box-shadow: 0 5px 15px rgba(0,0,0,0.15);
     }
 
     .thumbnail.active {
@@ -120,35 +120,6 @@
         font-size: 14px;
     }
 
-    /*
-     * AR button
-     */
-    .ar-button {
-        position: absolute;
-        bottom: 20px;
-        right: 20px;
-
-        background: #0078d4;
-        color: white;
-
-        border: none;
-        border-radius: 25px;
-
-        padding: 12px 20px;
-
-        font-size: 15px;
-        font-weight: bold;
-
-        cursor: pointer;
-    }
-
-    .ar-button:hover {
-        background: #005a9e;
-    }
-
-    /*
-     * Fullscreen button
-     */
     .fullscreen-button {
         position: absolute;
         top: 20px;
@@ -163,33 +134,57 @@
         padding: 10px 14px;
 
         cursor: pointer;
+        z-index: 10;
     }
 
     .fullscreen-button:hover {
         background: rgba(0,0,0,0.85);
     }
 
-    /*
-     * Loading indicator
-     */
     .loading {
         position: absolute;
+
         top: 50%;
         left: 50%;
 
         transform: translate(-50%, -50%);
 
-        background: rgba(255,255,255,0.9);
+        background: white;
 
         padding: 15px 25px;
+
         border-radius: 8px;
 
         font-weight: bold;
+
+        z-index: 5;
     }
 
-    /*
-     * Responsive design
-     */
+    .error {
+        display: none;
+
+        position: absolute;
+
+        left: 50%;
+        top: 50%;
+
+        transform: translate(-50%, -50%);
+
+        background: #fff;
+
+        padding: 20px;
+
+        border-radius: 8px;
+
+        max-width: 500px;
+
+        text-align: center;
+
+        box-shadow: 0 3px 15px rgba(0,0,0,.2);
+
+        z-index: 6;
+    }
+
     @media (max-width: 768px) {
 
         model-viewer {
@@ -200,9 +195,6 @@
             grid-template-columns: repeat(2, 1fr);
         }
 
-        header h1 {
-            font-size: 22px;
-        }
     }
 
     @media (max-width: 480px) {
@@ -211,69 +203,90 @@
             height: 350px;
         }
 
-        .thumbnail-gallery {
-            grid-template-columns: 1fr 1fr;
-        }
     }
+
 </style>
 
 </head>
 
 <body>
 
-<header> <h1>CRA Virtual Gallery</h1> <p>Explore our collection of interactive 3D models</p> </header>
+<header>
+
+<h1>CRA Virtual Gallery</h1>
+
+<p>
+    Explore our collection of interactive 3D models
+</p>
+
+</header>
 
 <main class="gallery-container">
 
-<!-- Main viewer -->
 <div class="viewer-container">
 
-    <div id="loading" class="loading">
+    <div id="loading"
+         class="loading">
+
         Loading 3D model...
+
     </div>
+
+
+    <div id="error"
+         class="error">
+
+        <strong>Unable to load the 3D model.</strong>
+
+        <p id="errorMessage"></p>
+
+    </div>
+
 
     <model-viewer
         id="modelViewer"
-        src=""
+
         camera-controls
-        touch-action="pan-y"
         auto-rotate
         shadow-intensity="1"
         exposure="1"
         environment-image="neutral"
-        ar
-        ar-modes="webxr scene-viewer quick-look"
+
         alt="3D model">
 
-        <button
-            slot="ar-button"
-            class="ar-button">
-            View in AR
-        </button>
-
     </model-viewer>
+
 
     <button
         class="fullscreen-button"
         onclick="toggleFullscreen()">
+
         ⛶ Fullscreen
+
     </button>
 
+
     <div class="model-info">
+
         <h2 id="modelTitle"></h2>
+
         <p id="modelDescription"></p>
+
     </div>
 
 </div>
 
-<!-- Thumbnails -->
+
 <div
     id="thumbnailGallery"
     class="thumbnail-gallery">
+
 </div>
 
 </main>
 
-<script> /* * ========================================================= * 3D MODEL CONFIGURATION * ========================================================= * * Add your models here. * * Each model requires: * * title - Name displayed below viewer * description - Description * model - URL to GLB/GLTF file * thumbnail - Image used for gallery thumbnail * */ const models = [ { title: "Personalized crotalus", description: "A crotalus clapper, used when bells are not allowed for Good Friday service, personalized by its owner.", model: "models/Personalized crotalus.glb", thumbnail: "Personalized crotalus.jpg" }, { title: "Apple Corer", description: "Apple corer used by the sisters of (____) to make apple sauce.", model: "models/Apple corer.glb", thumbnail: "Apple corer.png" }]; /* * ========================================================= * GET HTML ELEMENTS * ========================================================= */ const viewer = document.getElementById("modelViewer"); const title = document.getElementById("modelTitle"); const description = document.getElementById("modelDescription"); const thumbnailGallery = document.getElementById("thumbnailGallery"); const loading = document.getElementById("loading"); /* * ========================================================= * LOAD A MODEL * ========================================================= */ function loadModel(index) { const selectedModel = models[index]; // Show loading message loading.style.display = "block"; // Change model viewer.src = selectedModel.model; // Update text title.textContent = selectedModel.title; description.textContent = selectedModel.description; // Update active thumbnail document.querySelectorAll(".thumbnail").forEach( (thumbnail, thumbnailIndex) => { thumbnail.classList.toggle( "active", thumbnailIndex === index ); } ); } /* * ========================================================= * MODEL LOADED * ========================================================= */ viewer.addEventListener("load", () => { loading.style.display = "none"; }); /* * ========================================================= * CREATE THUMBNAILS * ========================================================= */ models.forEach((model, index) => { const thumbnail = document.createElement("div"); thumbnail.className = "thumbnail"; thumbnail.innerHTML = ` <img src="${model.thumbnail}" alt="${model.title}"> <div class="thumbnail-title"> ${model.title} </div> `; thumbnail.addEventListener("click", () => { loadModel(index); }); thumbnailGallery.appendChild(thumbnail); }); /* * ========================================================= * FULLSCREEN * ========================================================= */ function toggleFullscreen() { const container = document.querySelector(".viewer-container"); if (!document.fullscreenElement) { container.requestFullscreen(); } else { document.exitFullscreen(); } } /* * ========================================================= * LOAD FIRST MODEL * ========================================================= */ if (models.length > 0) { loadModel(0); } </script>
+<script> /* * ====================================================== * YOUR MODELS * ====================================================== */ const models = [ { title: "Personalized Crotalus", description: "A crotalus clapper, used when bells are not allowed for Good Friday service, personalized by its owner.", model: "models/Personalized%20crotalus.glb", thumbnail: "Personalized%20crotalus.jpg" }, { title: "Apple Corer", description: "Apple corer used by the sisters to make apple sauce.", model: "models/Apple%20corer.glb", thumbnail: "Apple%20corer.png" } ]; /* * ====================================================== * ELEMENTS * ====================================================== */ const viewer = document.getElementById("modelViewer"); const title = document.getElementById("modelTitle"); const description = document.getElementById("modelDescription"); const thumbnailGallery = document.getElementById("thumbnailGallery"); const loading = document.getElementById("loading"); const error = document.getElementById("error"); const errorMessage = document.getElementById("errorMessage"); /* * ====================================================== * LOAD MODEL * ====================================================== */ function loadModel(index) { const model = models[index]; loading.style.display = "block"; error.style.display = "none"; title.textContent = model.title; description.textContent = model.description; viewer.src = model.model; document .querySelectorAll(".thumbnail") .forEach((thumbnail, i) => { thumbnail.classList.toggle( "active", i === index ); }); } /* * ====================================================== * MODEL LOADED * ====================================================== */ viewer.addEventListener("load", function () { loading.style.display = "none"; error.style.display = "none"; }); /* * ====================================================== * MODEL ERROR * ====================================================== */ viewer.addEventListener("error", function () { loading.style.display = "none"; error.style.display = "block"; errorMessage.textContent = "The model could not be loaded. Check that the GLB filename and path are correct."; }); /* * ====================================================== * CREATE THUMBNAILS * ====================================================== */ models.forEach((model, index) => { const thumbnail = document.createElement("div"); thumbnail.className = "thumbnail"; thumbnail.innerHTML = ` <img src="${model.thumbnail}" alt="${model.title}"> <div class="thumbnail-title"> ${model.title} </div> `; thumbnail.addEventListener( "click", function () { loadModel(index); } ); thumbnailGallery.appendChild( thumbnail ); }); /* * ====================================================== * FULLSCREEN * ====================================================== */ function toggleFullscreen() { const container = document.querySelector( ".viewer-container" ); if (!document.fullscreenElement) { container.requestFullscreen(); } else { document.exitFullscreen(); } } /* * ====================================================== * LOAD FIRST MODEL * ====================================================== */ loadModel(0); </script>
 
-</body> </html>
+</body>
+
+</html>
